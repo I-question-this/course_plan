@@ -16,14 +16,42 @@ class Course:
         self.term = term
         self.year = year
 
+
+    def __add__(self, other):
+        return self.credits + other
+
+    def __radd__(self, other):
+        return self.credits + other
+
+
     def __str__(self):
         return "{self.department}{self.number} -- {self.name} -- "\
                 "{self.credits} -- {self.grade} -- {self.term}-{self.year}"\
                 .format(self=self)
 
 
-# Courses taken
-COMPLETED = [
+
+class CompletedCourses:
+    def __init__(self, completed):
+        self.completed = completed
+
+    def credit_hours(self, _filter=None):
+        """Return the number of credits completed, within the filter
+
+        Arguments:
+        _filter: Filter to apply to the courses when counting. 
+            The default 'None' means no filter.
+        """
+        if _filter is None:
+            applicable = self.completed
+        else:
+            applicable = filter(_filter, self.completed)
+
+        return sum(applicable)
+
+
+
+COMPLETED = CompletedCourses([
     # Fall 2018
     Course("CS", 6052, "INTLDATAANALYSIS", 3.0, "B+", "fall", 2018),
     Course("CS", 6070, "AUTOMATA", 3.0, "B+", "fall", 2018),
@@ -42,9 +70,7 @@ COMPLETED = [
     Course("CS", 7081, "ADV. ALGORITHMS I", 3.0, "A-", "fall", 2019),
     Course("EECE", 6036, "INTELLIGENT SYSTEMS", 3.0, "C", "fall", 2019),
     Course("EECE", 9089, "THESIS/DIS RESEARCH", 6.0, "P", "fall", 2019)
-]
-
-
+])
 
 def main(args=None):
     """Main function of this file
@@ -57,8 +83,10 @@ def main(args=None):
     parser = argparse.ArgumentParser()
     args = parser.parse_args(args=args)
 
-    for course in COMPLETED:
+    for course in COMPLETED.completed:
         print(course)
+
+    print("Total Credit Hours: {}".format(COMPLETED.credit_hours()))
 
     # Return success code
     return 0
