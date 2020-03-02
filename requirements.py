@@ -26,7 +26,18 @@ class PostBachelorsCredits(Requirement):
         Requirement.__init__(self, "Post Bachelors Credits", "93 credit hours")
 
     def completion(self, completed_courses):
-        return 93 <= completed_courses.credit_hours()
+        # The doctoral proposal can only be counted for up to 6 credits
+        def non_doctoral_proposal_course_filter(course):
+            return course.number != 9080
+        non_doctoral_credits = completed_courses.credit_hours(
+                non_doctoral_proposal_course_filter)
+
+        def doctoral_course_proposal_filter(course):
+            return course.number == 9080
+        doctoral_credits = completed_courses.credit_hours(
+                doctoral_course_proposal_filter)
+
+        return 93 <= non_doctoral_credits + min(6, doctoral_credits)
 REQUIREMENTS.append(PostBachelorsCredits())
 
 
