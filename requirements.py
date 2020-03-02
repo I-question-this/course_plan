@@ -42,6 +42,23 @@ REQUIREMENTS.append(PostBachelorsCredits())
 
 
 
+class ResearchHours(Requirement):
+    def __init__(self):
+        Requirement.__init__(self, "Research Hours", "60 credit hours")
+
+    def completion(self, completed_courses):
+        def course_filter(course):
+            if course.department == "CS" and course.number == 8089:
+                return True
+            elif course.department == "EECE" and course.number == 9089:
+                return True
+            else:
+                return False
+        return 60 <= completed_courses.credit_hours(course_filter)
+REQUIREMENTS.append(ResearchHours())
+
+
+
 class CourseWorkCredits(Requirement):
     def __init__(self):
         Requirement.__init__(self, "Course Work Credits", "30 credit hours")
