@@ -31,6 +31,18 @@ REQUIREMENTS.append(PostBachelorsCredits())
 
 
 
+class CourseWorkCredits(Requirement):
+    def __init__(self):
+        Requirement.__init__(self, "Course Work Credits", "30 credit hours")
+
+    def completion(self, completed_courses):
+        def course_filter(course):
+            return course.grade != "P"
+        return 30 <= completed_courses.credit_hours()
+REQUIREMENTS.append(CourseWorkCredits())
+
+
+
 class AdvancedGraduateCoursework(Requirement):
     def __init__(self):
         Requirement.__init__(self, "Advanced Graduate Coursework",
@@ -62,6 +74,7 @@ class GeneralComputerScienceTrack(Requirement):
                 return False
         return 2 <= completed_courses.credit_hours(course_filter)
 REQUIREMENTS.append(GeneralComputerScienceTrack())
+
 
 
 def main(args=None):
