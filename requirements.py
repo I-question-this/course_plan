@@ -30,6 +30,22 @@ class PostBachelorsCredits(Requirement):
 REQUIREMENTS.append(PostBachelorsCredits())
 
 
+
+class AdvancedGraduateCoursework(Requirement):
+    def __init__(self):
+        Requirement.__init__(self, "Advanced Graduate Coursework",
+                "15 7XXX+")
+
+    def completion(self, completed_courses):
+        def course_filter(course):
+            if course.number >= 7000:
+                if course.grade != "P":
+                    return True
+            return False
+        return 15 <= completed_courses.credit_hours(course_filter)
+REQUIREMENTS.append(AdvancedGraduateCoursework())
+
+
 def main(args=None):
     """Main function of this file
 
