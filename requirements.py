@@ -46,6 +46,24 @@ class AdvancedGraduateCoursework(Requirement):
 REQUIREMENTS.append(AdvancedGraduateCoursework())
 
 
+
+class GeneralComputerScienceTrack(Requirement):
+    def __init__(self):
+        Requirement.__init__(self, "General Computer Science Track",
+                "CS6070 and CS7081")
+
+    def completion(self, completed_courses):
+        def course_filter(course):
+            if course.department == "CS" and course.number == 6070:
+                return True
+            elif course.department == "CS" and course.number == 7081:
+                return True
+            else:
+                return False
+        return 2 <= completed_courses.credit_hours(course_filter)
+REQUIREMENTS.append(GeneralComputerScienceTrack())
+
+
 def main(args=None):
     """Main function of this file
 
