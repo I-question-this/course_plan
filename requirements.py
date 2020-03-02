@@ -9,13 +9,27 @@ from courses import COMPLETED
 
 # The blank requirements class and list
 class Requirement:
-    def __init__(self, name, description):
+    def __init__(self, name, description, required_ammount):
         self.name = name
         self.description = description
+        self.required_ammount = required_ammount
+
+
+    def completed(self, completed_courses):
+        """Amount"""
+        raise NotImplemented
+
 
     def completion(self, completed_courses):
         """Return True or False if completed"""
-        raise NotImplemented
+        return self.required_ammount <= self.completed(completed_courses)
+
+
+    def progress(self, completed_courses):
+        """Return string describing progress"""
+        return "{completed}/{required} credits completed".format(
+                completed=int(self.completed(completed_courses)),
+                required=self.required_ammount)
 REQUIREMENTS = []
 
 
@@ -23,9 +37,10 @@ REQUIREMENTS = []
 # The actual requirements, each added to the list
 class PostBachelorsCredits(Requirement):
     def __init__(self):
-        Requirement.__init__(self, "Post Bachelors Credits", "93 credit hours")
+        Requirement.__init__(self, "Post Bachelors Credits", "93 credit hours",
+                93)
 
-    def completion(self, completed_courses):
+    def completed(self, completed_courses):
         # The doctoral proposal can only be counted for up to 6 credits
         def non_doctoral_proposal_course_filter(course):
             return course.number != 9080
@@ -37,16 +52,19 @@ class PostBachelorsCredits(Requirement):
         doctoral_credits = completed_courses.credit_hours(
                 doctoral_course_proposal_filter)
 
-        return 93 <= non_doctoral_credits + min(6, doctoral_credits)
+        return non_doctoral_credits + min(6, doctoral_credits)
+
+
 REQUIREMENTS.append(PostBachelorsCredits())
 
 
 
 class ResearchHours(Requirement):
     def __init__(self):
-        Requirement.__init__(self, "Research Hours", "60 credit hours")
+        Requirement.__init__(self, "Research Hours", "60 credit hours",
+                60)
 
-    def completion(self, completed_courses):
+    def completed(self, completed_courses):
         def course_filter(course):
             if course.department == "CS" and course.number == 8089:
                 return True
@@ -54,19 +72,20 @@ class ResearchHours(Requirement):
                 return True
             else:
                 return False
-        return 60 <= completed_courses.credit_hours(course_filter)
+        return completed_courses.credit_hours(course_filter)
 REQUIREMENTS.append(ResearchHours())
 
 
 
 class CourseWorkCredits(Requirement):
     def __init__(self):
-        Requirement.__init__(self, "Course Work Credits", "30 credit hours")
+        Requirement.__init__(self, "Course Work Credits", "30 credit hours",
+                30)
 
-    def completion(self, completed_courses):
+    def completed(self, completed_courses):
         def course_filter(course):
             return course.grade != "P"
-        return 30 <= completed_courses.credit_hours()
+        return completed_courses.credit_hours()
 REQUIREMENTS.append(CourseWorkCredits())
 
 
@@ -74,15 +93,15 @@ REQUIREMENTS.append(CourseWorkCredits())
 class AdvancedGraduateCoursework(Requirement):
     def __init__(self):
         Requirement.__init__(self, "Advanced Graduate Coursework",
-                "15 7XXX+")
+                "15 7XXX+", 15)
 
-    def completion(self, completed_courses):
+    def completed(self, completed_courses):
         def course_filter(course):
             if course.number >= 7000:
                 if course.grade != "P":
                     return True
             return False
-        return 15 <= completed_courses.credit_hours(course_filter)
+        return completed_courses.credit_hours(course_filter)
 REQUIREMENTS.append(AdvancedGraduateCoursework())
 
 
@@ -90,9 +109,9 @@ REQUIREMENTS.append(AdvancedGraduateCoursework())
 class GeneralComputerScienceTrack(Requirement):
     def __init__(self):
         Requirement.__init__(self, "General Computer Science Track",
-                "CS6070 and CS7081")
+                "CS6070 and CS7081", 6)
 
-    def completion(self, completed_courses):
+    def completed(self, completed_courses):
         def course_filter(course):
             if course.department == "CS" and course.number == 6070:
                 return True
@@ -100,7 +119,7 @@ class GeneralComputerScienceTrack(Requirement):
                 return True
             else:
                 return False
-        return 2 <= completed_courses.credit_hours(course_filter)
+        return completed_courses.credit_hours(course_filter)
 REQUIREMENTS.append(GeneralComputerScienceTrack())
 
 
@@ -119,6 +138,7 @@ def main(args=None):
     for req in REQUIREMENTS:
         print("{req.name} -- {req.description} -- {completion}".format(req=req,
             completion=req.completion(COMPLETED)))
+        print("\tProgress: {progress}".format(progress=req.progress(COMPLETED)))
 
     # Return success code
     return 0
