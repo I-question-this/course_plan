@@ -72,6 +72,14 @@ COMPLETED = CompletedCourses([
     Course("EECE", 9089, "THESIS/DIS RESEARCH", 6.0, "P", "fall", 2019)
 ])
 
+INPROGRESS = [
+    # Sprint 2020
+    Course("CS", 6053, "NETWORK SECURITY", 3.0, "A", "spring", 2020),
+    Course("CS", 8035, "ADV. TP DATA SECURITY/PRIVACY", 3.0, "A", "spring",
+        2020),
+    Course("EECE", 9089, "THESIS/DIS RESEARCH", 6.0, "P", "spring", 2020)
+    ]
+
 def main(args=None):
     """Main function of this file
 

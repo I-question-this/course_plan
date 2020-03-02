@@ -5,7 +5,7 @@ __author__="Tyler Westland"
 import argparse
 import os
 
-from courses import COMPLETED
+from courses import COMPLETED, INPROGRESS
 
 # The blank requirements class and list
 class Requirement:
@@ -133,7 +133,13 @@ def main(args=None):
         sys.args.
     """
     parser = argparse.ArgumentParser()
+    parser.add_argument("-w", "--what_if", help="If set then in progress "\
+            "courses will be included in the calculations", default=False,
+            action="store_true")
     args = parser.parse_args(args=args)
+
+    if args.what_if:
+        COMPLETED.completed.extend(INPROGRESS)
 
     for req in REQUIREMENTS:
         print("{req.name} -- {req.description} -- {completion}".format(req=req,
