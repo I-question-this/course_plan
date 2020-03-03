@@ -93,6 +93,17 @@ REQUIREMENTS.append(ResearchHours())
 
 
 
+class DissertationProposal(Requirement):
+    def __init__(self):
+        Requirement.__init__(self, "Dissertation Proposal", "6 credit hours",
+                6)
+
+    def completed(self, completed_courses):
+        return completed_courses.credit_hours(doctoral_course_proposal_filter)
+REQUIREMENTS.append(DissertationProposal())
+
+
+
 class CourseWorkCredits(Requirement):
     def __init__(self):
         Requirement.__init__(self, "Course Work Credits", "30 credit hours",
