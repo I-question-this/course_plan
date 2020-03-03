@@ -48,6 +48,64 @@ def non_doctoral_proposal_course_filter(course):
 
 
 # The actual requirements, each added to the list
+class AdvancedGraduateCoursework(Requirement):
+    def __init__(self):
+        Requirement.__init__(self, "Advanced Graduate Coursework",
+                "15 7XXX+", 15)
+
+    def completed(self, completed_courses):
+        def course_filter(course):
+            if course.number >= 7000:
+                if course.grade != "P":
+                    return True
+            return False
+        return completed_courses.credit_hours(course_filter)
+REQUIREMENTS.append(AdvancedGraduateCoursework())
+
+
+
+class CourseWorkCredits(Requirement):
+    def __init__(self):
+        Requirement.__init__(self, "Course Work Credits", "30 credit hours",
+                30)
+
+    def completed(self, completed_courses):
+        def course_filter(course):
+            return course.grade != "P"
+        return completed_courses.credit_hours()
+REQUIREMENTS.append(CourseWorkCredits())
+
+
+
+class DissertationProposal(Requirement):
+    def __init__(self):
+        Requirement.__init__(self, "Dissertation Proposal", "6 credit hours",
+                6)
+
+    def completed(self, completed_courses):
+        return completed_courses.credit_hours(doctoral_course_proposal_filter)
+REQUIREMENTS.append(DissertationProposal())
+
+
+
+class GeneralComputerScienceTrack(Requirement):
+    def __init__(self):
+        Requirement.__init__(self, "General Computer Science Track",
+                "CS6070 and CS7081", 6)
+
+    def completed(self, completed_courses):
+        def course_filter(course):
+            if course.department == "CS" and course.number == 6070:
+                return True
+            elif course.department == "CS" and course.number == 7081:
+                return True
+            else:
+                return False
+        return completed_courses.credit_hours(course_filter)
+REQUIREMENTS.append(GeneralComputerScienceTrack())
+
+
+
 class PostBachelorsCredits(Requirement):
     def __init__(self):
         Requirement.__init__(self, "Post Bachelors Credits", "93 credit hours",
@@ -63,8 +121,6 @@ class PostBachelorsCredits(Requirement):
 
         # Only 6 credits of doctoral proposal count
         return non_doctoral_credits + min(6, doctoral_credits)
-
-
 REQUIREMENTS.append(PostBachelorsCredits())
 
 
@@ -90,64 +146,6 @@ class ResearchHours(Requirement):
         # Only 6 credits of doctoral proposal count
         return research_credits + min(6, doctoral_credits)
 REQUIREMENTS.append(ResearchHours())
-
-
-
-class DissertationProposal(Requirement):
-    def __init__(self):
-        Requirement.__init__(self, "Dissertation Proposal", "6 credit hours",
-                6)
-
-    def completed(self, completed_courses):
-        return completed_courses.credit_hours(doctoral_course_proposal_filter)
-REQUIREMENTS.append(DissertationProposal())
-
-
-
-class CourseWorkCredits(Requirement):
-    def __init__(self):
-        Requirement.__init__(self, "Course Work Credits", "30 credit hours",
-                30)
-
-    def completed(self, completed_courses):
-        def course_filter(course):
-            return course.grade != "P"
-        return completed_courses.credit_hours()
-REQUIREMENTS.append(CourseWorkCredits())
-
-
-
-class AdvancedGraduateCoursework(Requirement):
-    def __init__(self):
-        Requirement.__init__(self, "Advanced Graduate Coursework",
-                "15 7XXX+", 15)
-
-    def completed(self, completed_courses):
-        def course_filter(course):
-            if course.number >= 7000:
-                if course.grade != "P":
-                    return True
-            return False
-        return completed_courses.credit_hours(course_filter)
-REQUIREMENTS.append(AdvancedGraduateCoursework())
-
-
-
-class GeneralComputerScienceTrack(Requirement):
-    def __init__(self):
-        Requirement.__init__(self, "General Computer Science Track",
-                "CS6070 and CS7081", 6)
-
-    def completed(self, completed_courses):
-        def course_filter(course):
-            if course.department == "CS" and course.number == 6070:
-                return True
-            elif course.department == "CS" and course.number == 7081:
-                return True
-            else:
-                return False
-        return completed_courses.credit_hours(course_filter)
-REQUIREMENTS.append(GeneralComputerScienceTrack())
 
 
 
