@@ -34,6 +34,19 @@ REQUIREMENTS = []
 
 
 
+def doctoral_course_proposal_filter(course):
+    if course.department == "EECE" and course.number == 9080:
+        return True
+    elif course.department == "CS" and course.number == 8080:
+        return True
+    else:
+        return False
+
+
+def non_doctoral_proposal_course_filter(course):
+    return not doctoral_course_proposal_filter(course)
+
+
 # The actual requirements, each added to the list
 class PostBachelorsCredits(Requirement):
     def __init__(self):
@@ -42,16 +55,13 @@ class PostBachelorsCredits(Requirement):
 
     def completed(self, completed_courses):
         # The doctoral proposal can only be counted for up to 6 credits
-        def non_doctoral_proposal_course_filter(course):
-            return course.number != 9080
+        
         non_doctoral_credits = completed_courses.credit_hours(
                 non_doctoral_proposal_course_filter)
-
-        def doctoral_course_proposal_filter(course):
-            return course.number == 9080
         doctoral_credits = completed_courses.credit_hours(
                 doctoral_course_proposal_filter)
 
+        # Only 6 credits of doctoral proposal count
         return non_doctoral_credits + min(6, doctoral_credits)
 
 
@@ -65,6 +75,9 @@ class ResearchHours(Requirement):
                 60)
 
     def completed(self, completed_courses):
+        doctoral_credits = completed_courses.credit_hours(
+                doctoral_course_proposal_filter)
+
         def course_filter(course):
             if course.department == "CS" and course.number == 8089:
                 return True
@@ -72,7 +85,10 @@ class ResearchHours(Requirement):
                 return True
             else:
                 return False
-        return completed_courses.credit_hours(course_filter)
+
+        research_credits = completed_courses.credit_hours(course_filter)
+        # Only 6 credits of doctoral proposal count
+        return research_credits + min(6, doctoral_credits)
 REQUIREMENTS.append(ResearchHours())
 
 
