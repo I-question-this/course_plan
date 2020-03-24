@@ -73,11 +73,14 @@ COMPLETED = CompletedCourses([
 ])
 
 INPROGRESS = [
-    # Sprint 2020
+    # Spring 2020
     Course("CS", 6053, "NETWORK SECURITY", 3.0, "A", "spring", 2020),
     Course("CS", 8035, "ADV. TP DATA SECURITY/PRIVACY", 3.0, "A", "spring",
         2020),
-    Course("EECE", 9089, "THESIS/DIS RESEARCH", 6.0, "P", "spring", 2020)
+    Course("EECE", 9089, "THESIS/DIS RESEARCH", 6.0, "P", "spring", 2020),
+    # Fall 2020
+    Course("EECE", 7095, "INTRO COMPUTER ARCH", 3.0, "A", "fall", 2020),
+    Course("EECE", 9089, "THESIS/DIS RESEARCH", 15.0, "P", "fall", 2020)
     ]
 
 def main(args=None):
