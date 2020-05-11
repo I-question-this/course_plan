@@ -69,7 +69,7 @@ COMPLETED = CompletedCourses([
     Course("CS", 6054, "INFO RETRIEVAL", 3.0, "B", "fall", 2019),
     Course("CS", 7081, "ADV. ALGORITHMS I", 3.0, "A-", "fall", 2019),
     Course("EECE", 6036, "INTELLIGENT SYSTEMS", 3.0, "C", "fall", 2019),
-    Course("EECE", 9089, "THESIS/DIS RESEARCH", 6.0, "P", "fall", 2019)
+    Course("EECE", 9089, "THESIS/DIS RESEARCH", 6.0, "P", "fall", 2019),
     # Spring 2020
     Course("CS", 6053, "NETWORK SECURITY", 3.0, "A", "spring", 2020),
     Course("CS", 8035, "ADV. TP DATA SECURITY/PRIVACY", 3.0, "A", "spring",
@@ -80,7 +80,14 @@ COMPLETED = CompletedCourses([
 INPROGRESS = [
     # Fall 2020
     Course("EECE", 7095, "INTRO COMPUTER ARCH", 3.0, "A", "fall", 2020),
-    Course("EECE", 9089, "THESIS/DIS RESEARCH", 15.0, "P", "fall", 2020)
+    Course("EECE", 9089, "THESIS/DIS RESEARCH", 12.0, "P", "fall", 2020),
+    # Spring 2021
+    Course("EECE", 9080, "DISSERTATION PROPOSAL", 6.0, "P", "spring", 2021),
+    Course("EECE", 9089, "THESIS/DIS RESEARCH", 6.0, "P", "spring", 2021),
+    # Fall 2021
+    Course("EECE", 9089, "THESIS/DIS RESEARCH", 12.0, "P", "fall", 2021),
+    # Spring 2022
+    Course("EECE", 9089, "THESIS/DIS RESEARCH", 12.0, "P", "spring", 2022)
     ]
 
 def main(args=None):
